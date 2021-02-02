@@ -7,7 +7,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 const DAI = {
-  address: "0x6b175474e89094c44da98b954eedeac495271d0f",
+  address: "q",
   abi: [
     "function transfer(address _to, uint256 _value) returns (bool success)",
   ],
@@ -54,7 +54,7 @@ function App() {
     if (!provider) {
       throw new Error("Provider not connected");
     }
-    const contract = new Contract(DAI.address, DAI.abi, provider);
+    const contract = new Contract(DAI.address, DAI.abi, provider.getSigner());
     const res = await contract.transfer(address, utils.parseEther("1"));
     console.log("res", res);
   }
