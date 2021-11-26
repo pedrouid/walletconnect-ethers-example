@@ -21,12 +21,6 @@ export function getBrowserUrl() {
     : window.location.href;
 }
 
-export function formatMultiLineMessage(lines: string[]) {
-  let message = lines.reduce((prev, curr) => prev + curr + "\n", "");
-  if (message.endsWith("\n")) message = message.slice(0, -1);
-  return message;
-}
-
 export function listObject(obj: any) {
   return Object.keys(obj).map((key) => {
     return `${key}: ${obj[key]}`;
@@ -59,5 +53,8 @@ export function formatAuthMessage(
     "",
     ...listObject(params),
   ];
-  return formatMultiLineMessage(lines);
+
+  const message = lines.join("\n");
+
+  return message;
 }
