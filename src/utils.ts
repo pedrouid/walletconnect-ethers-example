@@ -41,7 +41,7 @@ export function formatAuthMessage(
   const url = getBrowserUrl();
 
   const now = Date.now();
-  const exp = now + 86400000;
+  const exp = now + ttl;
   const domain = extractRootDomain(url);
 
   const params = {
