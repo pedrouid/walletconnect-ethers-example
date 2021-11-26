@@ -11,10 +11,6 @@ export function extractHostname(url: string): string {
   return hostname;
 }
 
-export function extractRootDomain(url: string): string {
-  return extractHostname(url).split(".").slice(-2).join(".");
-}
-
 export function getBrowserUrl() {
   return typeof window === "undefined" || typeof window.location === "undefined"
     ? DEFAULT_BROWSER_URL
@@ -36,7 +32,7 @@ export function formatAuthMessage(
 
   const now = Date.now();
   const exp = now + ttl;
-  const domain = extractRootDomain(url);
+  const domain = extractHostname(url);
 
   const params = {
     URI: url,
