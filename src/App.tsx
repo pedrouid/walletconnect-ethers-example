@@ -1,10 +1,11 @@
 import React from "react";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletConnectProvider from "@walletconnect/ethereum-provider";
 import { Contract, providers, utils } from "ethers";
 
 // @ts-ignore
 import logo from "./logo.svg";
 import "./App.css";
+import { formatAuthMessage } from "./utils";
 
 const DAI = {
   address: "q",
@@ -14,6 +15,7 @@ const DAI = {
 };
 
 function App() {
+  const [chainId, setChainId] = React.useState<number>(1);
   const [address, setAddress] = React.useState<string>("");
   const [provider, setProvider] = React.useState<providers.Web3Provider>();
 
@@ -35,6 +37,7 @@ function App() {
 
     const accounts = (await web3Provider.enable()) as string[];
     setAddress(accounts[0]);
+    setChainId(web3Provider.chainId);
 
     const provider = new providers.Web3Provider(web3Provider);
     setProvider(provider);
@@ -44,7 +47,7 @@ function App() {
     if (!provider) {
       throw new Error("Provider not connected");
     }
-    const msg = `Authenticate ${address}`;
+    const msg = formatAuthMessage(address, chainId);
     const sig = await provider.send("personal_sign", [msg, address]);
     console.log("Signature", sig);
     console.log("isValid", utils.verifyMessage(msg, sig) === address);
@@ -58,6 +61,7 @@ function App() {
     const res = await contract.transfer(address, utils.parseEther("1"));
     console.log("res", res);
   }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -66,7 +70,7 @@ function App() {
         {address ? (
           <>
             <div>{address}</div>
-            <button onClick={signMessage}>Sign Message</button>
+            <button onClick={signMessage}>Authenticate</button>
             <button onClick={transferDai}>Transfer DAI</button>
           </>
         ) : (
