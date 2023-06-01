@@ -50,12 +50,14 @@ function App() {
   }
 
   async function connect() {
-    if (!process.env.REACT_APP_INFURA_ID) {
-      throw new Error("Missing Infura Id");
+    if (!process.env.REACT_APP_WC_PROJECT_ID) {
+      throw new Error("Missing WalletConnect Project Id");
     }
 
-    const web3Provider = new WalletConnectProvider({
-      infuraId: process.env.REACT_APP_INFURA_ID,
+    const web3Provider = await WalletConnectProvider.init({
+      projectId: process.env.REACT_APP_WC_PROJECT_ID,
+      showQrModal: true,
+      chains: [1],
     });
 
     web3Provider.on("disconnect", reset);
