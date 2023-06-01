@@ -53,6 +53,7 @@ function App() {
     if (!process.env.REACT_APP_INFURA_ID) {
       throw new Error("Missing Infura Id");
     }
+
     const web3Provider = new WalletConnectProvider({
       infuraId: process.env.REACT_APP_INFURA_ID,
     });
@@ -68,7 +69,7 @@ function App() {
       setAddress(accounts[0]);
     });
 
-    web3Provider.on("chainChanged", (chainId: number) => {
+    web3Provider.on("chainChanged", (chainId: any) => {
       console.log("chainChanged", chainId);
       setChainId(chainId);
     });

@@ -47,6 +47,7 @@ export function formatAuthMessage(
     `${domain} wants you to sign in with your Ethereum account:`,
     address,
     "",
+    // @ts-ignore
     ...listObject(params),
   ];
 
