@@ -17,8 +17,8 @@ type Chains = Record<number, Chain>;
 const ETHEREUM_RPC_URL = `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`;
 const POLYGON_RPC_URL = "https://polygon.llamarpc.com";
 
-const DAI = {
-  address: "q",
+const USDC = {
+  address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
   abi: [
     "function transfer(address _to, uint256 _value) returns (bool success)",
   ],
@@ -97,7 +97,7 @@ function App() {
     if (!provider) {
       throw new Error("Provider not connected");
     }
-    const contract = new Contract(DAI.address, DAI.abi, provider.getSigner());
+    const contract = new Contract(USDC.address, USDC.abi, provider.getSigner());
     const res = await contract.transfer(address, utils.parseEther("1"));
     console.log("res", res);
   }
@@ -106,11 +106,7 @@ function App() {
     if (!provider) {
       throw new Error("Provider not connected");
     }
-    let newChainId = chainId === 1 ? 137 : 1;
-    const chain = CHAINS[newChainId];
-    if (!chain) {
-      throw new Error(`Unknown chainId: ${newChainId}`);
-    }
+    const chain = CHAINS[chainId === 1 ? 137 : 1];
     try {
       await provider.send("wallet_switchEthereumChain", [
         { chainId: chain.chainId },
@@ -148,15 +144,15 @@ function App() {
             <div>
               {!!CHAINS[chainId] ? CHAINS[chainId].chainName : "Unknown chain"}
             </div>
-            <button onClick={signMessage}>{"Authenticate"}</button>
-            <button onClick={transferDai}>{"Transfer DAI"}</button>
+            <button onClick={signMessage}>{"Sign in with Ethereum"}</button>
+            <button onClick={transferDai}>{"Transfer 1.0 USDC"}</button>
             <button onClick={switchChain}>
-              {chainId === 1 ? "Switch to Polygon" : "Switch to Ethereum"}
+              {`Switch to ${chainId === 1 ? "Polygon" : "Ethereum"}`}
             </button>
-            <button onClick={disconnect}>{"Disconnect"}</button>
+            <button onClick={disconnect}>{"Disconnect Wallet"}</button>
           </>
         ) : (
-          <button onClick={connect}>Connect</button>
+          <button onClick={connect}>Connect Wallet</button>
         )}
       </header>
     </div>
